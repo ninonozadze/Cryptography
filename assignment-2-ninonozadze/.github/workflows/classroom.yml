@@ -1,0 +1,40 @@
+name: Autograding Tests
+'on':
+- workflow_dispatch
+- repository_dispatch
+permissions:
+  checks: write
+  actions: read
+  contents: read
+jobs:
+  run-autograding-tests:
+    runs-on: ubuntu-latest
+    if: github.actor != 'github-classroom[bot]'
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    - name: test_project_2.1
+      id: test_project_2-1
+      uses: classroom-resources/autograding-command-grader@v1
+      with:
+        test-name: test_project_2.1
+        setup-command: sudo -H chmod -R +x .
+        command: python3 project_2_1/driver.py
+        timeout: 10
+        max-score: 60
+    - name: test_project_2.2
+      id: test_project_2-2
+      uses: classroom-resources/autograding-command-grader@v1
+      with:
+        test-name: test_project_2.2
+        setup-command: sudo -H chmod -R +x .
+        command: python3 project_2_2/driver.py
+        timeout: 10
+        max-score: 40
+    - name: Autograding Reporter
+      uses: classroom-resources/autograding-grading-reporter@v1
+      env:
+        TEST_PROJECT_2-1_RESULTS: "${{steps.test_project_2-1.outputs.result}}"
+        TEST_PROJECT_2-2_RESULTS: "${{steps.test_project_2-2.outputs.result}}"
+      with:
+        runners: test_project_2-1,test_project_2-2

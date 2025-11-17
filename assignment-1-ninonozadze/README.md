@@ -1,97 +1,92 @@
-სახელი და გვარი: ნინო ნოზაძე
-ფრიუნის იმეილი: ninoza21@freeuni.edu.ge
+# Instructions
 
-# პირველი დავალების ინსტრუქცია
-
-ამ დავალებაში უნდა ამოხსნათ [cryptopals challenge](https://cryptopals.com/sets/1)-ების პირველი ექვსი ამოცანა. 
-დავალება უნდა შეასრულოთ Python 3-ზე. 
-მე-X ამოცანის კოდი დაწერეთ ფაილში challengeX.py.
-სატესტო მონაცემები შემოდის stdin-ზე, ხოლო პასუხი უნდა გამოიტანეთ stdout-ზე. 
-ამოცანების პირობები მოცემულია [cryptopals](https://cryptopals.com/sets/1)-ის საიტზე. 
-სატესტო მონაცემები იხილეთ [აქ](tests).
-
-
-| ამოცანა | ქულა | პირობა |
-|-----------|----|--------|
-| ამოცანა 1 | 5 ქულა  | https://cryptopals.com/sets/1/challenges/1 |
-| ამოცანა 2 | 5 ქულა  | https://cryptopals.com/sets/1/challenges/2 |
-| ამოცანა 3 | 5 ქულა  | https://cryptopals.com/sets/1/challenges/3 |
-| ამოცანა 4 | 25 ქულა | https://cryptopals.com/sets/1/challenges/4 |
-| ამოცანა 5 | 10 ქულა | https://cryptopals.com/sets/1/challenges/5 |
-| ამოცანა 6 | 50 ქულა | https://cryptopals.com/sets/1/challenges/6 |
+The code for each task was written in a file named challengeX.py.
+Test data was provided via stdin, and the corresponding output was printed to stdout.
+Problem statements were sourced from the [Cryptopals](https://cryptopals.com/sets/1) website.
+Test data was reviewed [here](tests).
 
 
 
-<!-- ### ამოცანა 1 
-(5 ქულა)
+| Problems |
+|--------|
+| https://cryptopals.com/sets/1/challenges/1 |
+| https://cryptopals.com/sets/1/challenges/2 |
+| https://cryptopals.com/sets/1/challenges/3 |
+| https://cryptopals.com/sets/1/challenges/4 |
+| https://cryptopals.com/sets/1/challenges/5 |
+| https://cryptopals.com/sets/1/challenges/6 |
 
-პირობა: https://cryptopals.com/sets/1/challenges/1  
 
-Input: base64 სტრინგი.  
-Output: hex სტრინგი.  
 
-#### მაგალითი  
+<!-- ### Problem 1 
+
+instruction: https://cryptopals.com/sets/1/challenges/1  
+
+Input: base64 string.  
+Output: hex string.  
+
+#### example  
 Input: `49276d206b696c6c696e6720796f757220627261696e206c696b65206120706f69736f6e6f7573206d757368726f6f6d`  
 Output: `SSdtIGtpbGxpbmcgeW91ciBicmFpbiBsaWtlIGEgcG9pc29ub3VzIG11c2hyb29t`
 
-### ამოცანა 2 (5 ქულა)
+### Problem 2
 
-პირობა: https://cryptopals.com/sets/1/challenges/2  
+instruction: https://cryptopals.com/sets/1/challenges/2  
 
-Input: ორი ხაზი, თითოზე ერთი hex სტრინგი.  
-Output: hex სტრინგი.  
+Input: two lineas, each one is hex string.  
+Output: hex string.  
 
-#### მაგალითი  
+#### example  
 Input:  
 `1c0111001f010100061a024b53535009181c`  
 `686974207468652062756c6c277320657965`  
 Output: `746865206b696420646f6e277420706c6179`
 
-### ამოცანა 3 (5 ქულა)
+### Problem 3
 
-პირობა: https://cryptopals.com/sets/1/challenges/3  
+instruction: https://cryptopals.com/sets/1/challenges/3  
 
-Input: hex სტრინგი.  
-Output: სტრინგი.  
+Input: hex string.  
+Output: string.  
 
-#### მაგალითი
+#### example
 Input: `1b37373331363f78151b7f2b783431333d78397828372d363c78373e783a393b3736`  
 Output: `Cooking MC's like a pound of bacon`
   
 
-### ამოცანა 4 (25 ქულა)
+### Problem 4
 
-პირობა: https://cryptopals.com/sets/1/challenges/4  
+instruction: https://cryptopals.com/sets/1/challenges/4  
 
-Input:  პირველ ხაზზე წერია რიცხვი N, შემდეგ N ხაზი თითოზე ერთი hex სტრინგით.    
+Input:  first string - N, next N lines - each hex string.    
 Output: სტრინგი.  
 
-#### მაგალითი  
+#### example  
 
-Input: [ეს ტექსტი](problem4-input.txt).  
+Input: [this text](problem4-input.txt).  
 Ouput: `Now that the party is jumping`
 
-### ამოცანა 5 (10 ქულა)
+### Problem 5
 
-პირობა: https://cryptopals.com/sets/1/challenges/5  
+instruction: https://cryptopals.com/sets/1/challenges/5  
 
-Input: პირველ ხაზზე სტრინგი - გასაღები, მეორეზე სტრინგი - ტექსტი.   
-Output: სტრინგი.  
+Input: first string - key, second string - text.   
+Output: string.  
 
-#### მაგალითი
+#### example
 
 Input:  
 `ICE`  
 `Burning 'em, if you ain't quick and nimble, I go crazy when I hear a cymbal`  
 Output: `0b3637272a2b2e63622c2e69692a23693a2a3c6324202d623d63343c2a26226324272765272a282b2f2065630c69242a69203728393c69342d2c2d6500632d2c22376922652a3a282b2229`
 
-### ამოცანა 6 (50 ქულა)
+### Problem 6
 
-პირობა: https://cryptopals.com/sets/1/challenges/6  
+instruction: https://cryptopals.com/sets/1/challenges/6  
 
-Input: hex სტრინგი.  
-Output: სტრინგი.  
+Input: hex string.  
+Output: string.  
 
-#### მაგალითი  
-Input: [ეს სტრინგი](problem6-input.txt).  
-Output: [ეს სტრინგი](problem6-output.txt).   -->
+#### example  
+Input: [this string](problem6-input.txt).  
+Output: [this string](problem6-output.txt).   -->

@@ -1,83 +1,78 @@
-სახელი და გვარი: ნინო ნოზაძე  
-ფრიუნის იმეილი: ninoza21@freeunu.edu.ge
+# Instruction
 
-# მეორე დავალების ინსტრუქცია
+### Problem 1 - Block cipher decryption
 
-ეს დავალება შედგება ორი ნაწილისგან. საწყისი კოდი მოცემულია Python3-ზე. შესაბამისად, უნდა დაწეროთ ამ ენაზე.  
+Source files in [project_2_1](project_2_1).
 
-### ამოცანა 1 - ბლოკური კოდის გაშიფვრა (60 ქულა)
+In this assignment, you must decrypt the message found in ([ctext.txt](project_2_1/ctext.txt)), which was encrypted using AES-128 in CBC mode with [PKCS #7](https://en.wikipedia.org/wiki/Padding_(cryptography)) padding and a random IV.
 
-საწყისი ფაილები იხილეთ [project_2_1](project_2_1)-ში.
+You have access to a server that attempts to decrypt any ciphertext you send. However, the server’s response only tells you whether a decryption error occurred:
+1 - the ciphertext decrypted successfully
+0 - a padding or decryption error occurred
 
-ამ დავალებაში თქვენ უნდა გაშიფროთ შეტყობინება ([ctext.txt](project_2_1/ctext.txt)), რომელიც მიიღეს AES-128-თი CBC-mode-ში [PKCS #7](https://en.wikipedia.org/wiki/Padding_(cryptography)) პადინგით და random IV-ით.
-თქვენ გაქვთ წვდომა სერვერთან, რომელიც გაშიფრავს გამოგზავნილ შეტყობინებებს, მაგრამ პასუხად გეტყვით მხოლოდ იმას, მოხდა თუ არა შეცდომა გაშიფრვის დროს 
-(1 თუ სწორად გაიშიფრა, 0 თუ არასწორად).
-ქსელთან მუშაობის ნაწილი (პაკეტების გაგზავნა და მიღება) იმპლემენტირებულია.
-
-გაშიფრული შეტყობინება (plaintext) ASCII-ში გადაყვანის შემდეგ არის კითხვადი, ასე რომ მარტივად გაიგებთ, სწორია თქვენი ამოხსნა თუ არა.
-თქვენი კოდი დაწერეთ ფაილში [decipher.py](project_2_1/decipher.py), რომელიც გაიშვება ბრძანებით
+The decrypted message (plaintext), once converted to ASCII, will be human-readable, so you can easily tell whether your solution is correct.
+Write your code in the file [decipher.py](project_2_1/decipher.py), which will be executed using the command:
 ```
 python3 decipher.py ctext.txt
 ```
-და stdout-ზე გამოიტანს გაშიფრულ შეტყობინებას (plaintext-ს) პადინგის გარეშე.
+and it should print the decrypted message (the plaintext) to stdout, with all padding removed.
 
-#### გატესტვის ინსტრუქცია:  
-1) გაუშვით სერვერი ლოკალურად რომელიმე პორტზე, მაგალითად ასე:
+#### Test instructions:
+1) Run the server locally on any port you choose. For example:
 ```
 ./server 6667
 ```
-2) `oracle.py` ფაილში ჩაწერეთ ლოკალჰოსტი IP მისამართად და თქვენი არჩეული პორტი, მაგალითად
+2) In `oracle.py`, set the IP address to localhost and use the same port you chose. Example:
 `s.connect(('127.0.0.1', 6667))`
-3) იმის შესამოწმებლად, რომ სერვერი სწორად მუშაობს, გაუშვით ბრძანება
+3) Verify that the servers and oracle work properly:
 ```
 python3 sample.py ctext.txt
 ```
-4) საკუთარი კოდის შესამოწმებლად, გაუშვით ბრძანება
+4) Test your implementation:
 ```
 python3 decipher.py ctext.txt
 ```
 
-### ამოცანა 2 - CBC-MAC (40 ქულა)
+### Problem 2 - CBC-MAC
 
-საწყისი ფაილები იხილეთ [project_2_2](project_2_2)-ში.
+Source files in [project_2_2](project_2_2).
 
-
-ამ დავალებაში თქვენ უნდა განახორციელოთ შეტევა raw CBC-MAC-ზე, რითაც აჩვენებთ, რომ ის არ არის დაცული MAC-ი სხვადასხვა სიგრძის შეტყობინებებისთვის.
-შეგახსენებთ, როგორ მუშაობს CBC-MAC x-ბლოკიანი შეტყობინებების მაგალითზე:
+In this assignment, you will demonstrate that raw CBC-MAC is insecure for messages of variable length by performing a forgery attack.
+For an x-block message, CBC-MAC works as shown:
 
 ![CBC-MAC](https://media.cheggcdn.com/media/409/40944253-8cc8-4d0d-90eb-85321a95ad8a/phprlvpCN.png)
 
-თქვენ გაქვთ საშუალება მიიღოთ ტეგები (დაგენერირებული უცნობი გასაღებით) ნებისმიერი 2-ბლოკიანი (32-ბაიტიანი) შეტყობინებისთვის. 
-თქვენი ამოცანაა, მიიღოთ ტეგი __ნებისმიერი ლუწი რაოდენობა ბლოკისგან შემდგარი შეტყობინებისთვის__ (შეტყობინების ზომა არ გადააჭარბებს 255 ბაიტს).
+You are given access to an oracle that returns tags (computed under an unknown key) only for 2-block messages (32 bytes).
+Your goal is to construct a valid tag for a message of __any even number of blocks__, up to 255 bytes.
 
-თავის შესამოწმებლად, გაქვთ წვდომა სერვერზე არსებულ Verifier-თან, რომელიც გეტყვით, შეესაბამება თუ არა მიღებული ტეგი შეტყობინებას.
-როგორც წინა დავალებაში, ქსელთან მუშაობის ნაწილი (პაკეტების გაგზავნა და მიღება) იმპლემენტირებულია.
+You can verify your forged tag using the provided server-side Verifier.
 
-დასაწყისისთვის, შეგიძლიათ შეამოწმოთ, რომ Mac და Verifier მუშაობენ 2-ბლოკიან [test_message](project_2_2/test_message.txt)-ზე, ხოლო შემდეგ შეამოწმოთ თქვენი ამოხსნა [challenge_message](project_2_2/challenge_message.txt)-ზე: “I, the server, hereby agree that I will pay $100 to this student” (4-ბლოკიანი შეტყობინება). 
+First, make sure the MAC and Verifier servers work correctly by testing them on the 2-block message in [test_message](project_2_2/test_message.txt). Once everything is set up, you can test your forging code on the 4-block message in [challenge_message](project_2_2/challenge_message.txt): “I, the server, hereby agree that I will pay $100 to this student” (4-block message). 
 
-თქვენი კოდი დაწერეთ ფაილში [forge.py](project_2_2/forge.py), რომელიც გაიშვება ბრძანებით
+Your code should be written in [forge.py](project_2_2/forge.py).
+When run as:
 ```
 python3 forge.py challenge_message.txt
 ```
-და stdout-ზე გამოიტანს ტეგს *hex სტრინგად*.
+it must output the forged tag as a *hex string* to stdout.
 
-#### გატესტვის ინსტრუქცია:   
-1) გაუშვით mac და vrfy სერვერები ლოკალურად რომელიმე პორტებზე, მაგ:
+#### Test instructions:
+1) Run the MAC server and the Verifier locally, on any ports you choose. Example:
 ```
 ./mac-server 6667
 ```
 ```
 ./vrfy-server 6668
 ```
-2) `oracle.py` ფაილში ჩაწერეთ ლოკალჰოსტი IP მისამართად და თქვენი არჩეული პორტები, მაგალითად
+2)  In `oracle.py`, set the IP address to localhost and use the same port you chose. Example:
 `mac_sock.connect(('127.0.0.1', 6667))` <br>
 `vrfy_sock.connect(('127.0.0.1', 6668))`
 
-3) იმის შესამოწმებლად, რომ სერვერები სწორად მუშაობს, გაუშვით ბრძანება
+3) Verify that the servers and oracle work properly:
 ```
 python3 sample.py test_message.txt
 ```
-4) საკუთარი კოდის შესამოწმებლად, გაუშვით ბრძანება
+4) Test your implementation:
 ```
 python3 forge.py challenge_message.txt
 ```

@@ -1,84 +1,91 @@
-სახელი და გვარი: ნინო ნოზაძე  
-ფრიუნის იმეილი: ninoza21@freeuni.edu.ge
+# Instruction
 
-# მესამე დავალების ინსტრუქცია
+This assignment consists of two parts. You may structure your code modularly.
 
-ეს დავალება შედგება ორი ნაწილისგან. ორივე ნაწილის კოდი შეგიძლიათ დაწეროთ მოდულარულად, მთავარია ყველა ფაილი, რომელიც გაშვებისთვის იქნება საჭირო, ატვირთოთ აქ. საწყისი კოდი მოცემულია Python3-ზე. შესაბამისად, უნდა დაწეროთ ამ ენაზე. 
+_In these tasks, **you are not allowed** to use external libraries._
 
-_ამ დავალებებში **არ შეგიძლიათ** გარე ბიბლიოთეკების გამოყენება_
+### Problem 1 - Meet-in-the-Middle Attack on the Discrete Logarithm
 
-### ამოცანა 1 - Meet-in-the-middle შეტევა დისკრეტულ ლოგარითმზე (50 ქულა)
+In this task, you must compute a discrete logarithm in Z<sub>p</sub><sup>*</sup>, where p is a prime number.
+You will be given four arguments:
 
-ამ ამოცანაში თქვენ უნდა გამოთვალოთ დისკრეტული ლოგარითმი Z<sub>p</sub><sup>*</sup>-ში, სადაც p არის მარტივი რიცხვი. გადმოგეცემათ ოთხი არგუმენტი:
++ p - a prime number,
++ g - a generator of Z<sub>p</sub><sup>*</sup>,
++ h - an element of Z<sub>p</sub><sup>*</sup>; note that there exists some value x such that h ≡ g<sup>x</sup> (mod p),
++ max_x - the maximum possible value of x.
 
-+ p - მარტივი რიცხვი,
-+ g - Z<sub>p</sub><sup>*</sup>-ის გენერატორი,
-+ h - Z<sub>p</sub><sup>*</sup>-ის ერთ-ერთი ელემენტი; დააკვირდით, რომ არსებობს ისეთი x რომ h ≡ g<sup>x</sup> (mod p),
-+ max_x - x-ის მაქსიმალური მნიშვნელობა.
+You must find the value of x that satisfies the equation h ≡ g<sup>x</sup> (mod p).
 
-თქვენ უნდა იპოვოთ ის x, რომლისთვისაც სრულდება ტოლობა h ≡ g<sup>x</sup> (mod p).
+In the example used for testing your code, it is known that max_x ≤ 2<sup>40</sup>. A naive approach (trying all possible values of x) would require up to 2<sup>40</sup> multiplications, which is computationally expensive.
+Instead, for this task you should use a more efficient method - meet-in-the-middle attack.
 
-მაგალითისთვის, რომელზეც შემოწმდება თქვენი კოდი, ცნობილია, რომ max_x არ აღემატება 2<sup>40</sup>-ს. ტრივიალური ალგორითმით (x-ის ყველა შესაძლო მნიშვნელობისთვის გადაყოლით) მოგვიწევდა 2<sup>40</sup> გამრავლების ჩატარება. მაგრამ ამ შემთხვევისთვის გამოვიყენებთ უფრო სწრაფ შეტევას - meet-in-the-middle attack-ს.
+To understand how this attack works, observe the following:
 
-იმისთვის, რომ გავიგოთ, როგორ მუშაობს ეს შეტევა, შევნიშნოთ:
+If max_x = B<sup>2</sup> and x ≤ B<sup>2</sup>, then we can represent x as x = x<sub>0</sub>B + x<sub>1</sub>, where x<sub>0</sub> ≤ B and x<sub>1</sub> ≤ B.
 
-თუ max_x = B<sup>2</sup> და x ≤ B<sup>2</sup>, x შეგვიძლია წარმოვადგინოთ როგორც x = x<sub>0</sub>B + x<sub>1</sub>, სადაც x<sub>0</sub> ≤ B და x<sub>1</sub> ≤ B.
-
-აქედან გამომდინარე, h ≡ g<sup>x</sup> ≡ g<sup>x<sub>0</sub>B + x<sub>1</sub></sup> ≡ g<sup>x<sub>0</sub>B</sup> ⋅ g<sup>x<sub>1</sub></sup> (mod p).
-განტოლების ორივე მხარე შეგვიძლია გავყოთ g<sup>x<sub>1</sub></sup>-ზე და მივიღებთ:
+From this, we get h ≡ g<sup>x</sup> ≡ g<sup>x<sub>0</sub>B + x<sub>1</sub></sup> ≡ g<sup>x<sub>0</sub>B</sup> ⋅ g<sup>x<sub>1</sub></sup> (mod p).
+If we divide both sides by g<sup>x<sub>1</sub></sup>, we obtain:
 
 h/g<sup>x<sub>1</sub></sup> ≡ (g<sup>B</sup>)<sup>x<sub>0</sub></sup> (mod p)
 
-მიღებულ განტოლებაში ცნობილია ყველა ცვლადის მნიშვნელობა, გარდა x<sub>0</sub>-ისა და x<sub>1</sub>-ისა. ამიტომაც შეგვიძლია გამოვთვალოთ მარცხენა მხარის ყველა შესაძლო მნიშვნელობა, შევინახოთ ჰეშ-ცხრილში შესაბამის x<sub>1</sub>-თან ერთად და შემდეგ შევამოწმოთ, x<sub>0</sub>-ის რომელი მნიშვნელობისთვის გვექნება ჰეშ-ცხრილში (g<sup>B</sup>)<sup>x<sub>0</sub></sup>-ის შესაბამისი ჩანაწერი. 
+In this equation, all values except x<sub>0</sub> ​ and x<sub>1</sub> ​ are known. This allows us to proceed as follows:
+1. Compute all possible values of h/g<sup>x<sub>1</sub></sup> (mod p)
+   and store them in a hash table together with their corresponding x<sub>1</sub>
+2. Then iterate over all x<sub>0</sub> and compute g<sup>B</sup>)<sup>x<sub>0</sub></sup> (mod p), checking whether this value appears in the hash table.
 
-(დაახლოებით რამდენი ოპერაცია დაგვჭირდება ამ შეტევის განსახორციელებლად?)
+How many operations does this attack require (approximately)?
 
-#### ტექნიკური დეტალები:
+#### Technical Details:
 
-თქვენ უნდა შეავსოთ ფაილი `dlog.py` (დაწეროთ `discrete_log` ფუნქციის იმპლემენტაცია), რომელიც გაიშვება შემდეგი ბრძანებით:
+You need to complete the file `dlog.py` by implementing the function `discrete_log`.
+Your script will be executed as follows:
 ```
 python3 dlog.py
 ```
 
-stdin-დან შემოვა p-ს, g-ს და h-ის მნიშვნელობები.
-stdout-ზე უნდა გამოიტანოთ x-ის მნიშვნელობა. 
+The values of p, g, and h will be provided via stdin.
+Your program should print the value of x to stdout.
 
-თუ თქვენი კოდი **1 წუთში** არ დაასრულებს მუშაობას, ქულას ვერ მიიღებთ.
-
-ტერმინალში პროგრამის მუშაობის დრო შეგიძლიათ შეამოწმოთ time ბრძანების გამოყენებით.
+Note: Your code must finish execution within **one minute**.
+You can measure execution time in the terminal using the time command.
 
 <br>
 
-### ამოცანა 2 - RSA-ზე დაფუძნებული ხელმოწერის გაყალბება (50 ქულა)
-63-ბაიტინი შეტყობინებებისთვის ხელმოწერის დასაგენერირებლად იყენებენ შემდეგ სქემას: საჯარო გასაღები არის RSA-ის სტანდარტული წყვილი (N,e), საიდუმლო გასაღები კი, ასევე სტანდარტულად - (N,d), სადაც N არის 128-ბაიტიანი (1024-ბიტიანი) მთელი რიცხვი. 63-ბაიტიანი შეტყობინება m-ის ხელმოწერა კი გამოითვლება ასე: σ ≡ M<sup>d</sup>(mod N), სადაც:
-
+### Problem 2 - Forging an RSA‑based Signature
+For 63‑byte messages, signatures are generated using the following scheme:
+The public key is a standard RSA pair (N,e),
+The private key is the standard (N,d),
+N is a 128‑byte (1024‑bit) integer.
+For a 63‑byte message m, the signature is computed as: σ ≡ M<sup>d</sup>(mod N), 
+where the encoded value M is defined as:
 M = 0x00 m 0x00 m
-(დარწმუნდით, რომ M-ის ზომა 128 ბაიტია).
+Make sure that the final value M is exactly 128 bytes long.
 
-თუკი m-ის ზომა ნაკლებია 63 ბაიტზე, მაშინ შეტყობინებას წინ ემატება 0-ები საჭირო ზომამდე შესავსებად (ერთბაიტიან შეტყობინება “x”-სა და ორბაიტიან შეტყობინება “0x00 x”-ს ერთნაირი ხელმოწერა ექნებათ. სქემის ეს სისუსტე ცნობილია და არ არის საინტერესო ამ ამოცანაში).
 
-თქვენი ამოცანაა, იპოვოთ ხელმოწერა 63-ბაიტიანი challenge შეტყობინებისთვის.
+If m is shorter than 63 bytes, it is padded with leading zeros until it reaches 63 bytes.
+(For example, the 1‑byte message "x" and the 2‑byte message "0x00 x" will result in the same signature.
+This weakness is known and not relevant for this task.)
 
-თქვენ გექნებათ წვდომა სერვერთან, რომელიც დაგიბრუნებთ ნებისმიერი 63-ბაიტიანი ან უფრო მოკლე შეტყობინების ხელმოწერას, გარდა challenge შეტყობინებისა.
+Your task is to forge the signature for the 63‑byte challenge message.
 
-ასევე, გექნებათ წვდომა ვერიფიკაციის სერვერთან, რომელიც მიიღებს შეტყობინებისა და ხელმოწერის წყვილს და გიპასუხებთ, შეესაბამება თუ არა ხელმოწერა შეტყობინებას.
+You are given:
+Access to a server that returns signatures for any 63‑byte or shorter message except the challenge message itself.
+Access to a verification server, which checks whether a given signature/message pair is valid.
 
-ქსელთან მუშაობის ნაწილი (პაკეტების გაგზავნა და მიღება), როგორც წინა დავალებებში, იმპლემენტირებულია.
-დასაწყისისთვის შეგიძლიათ შეამოწმოთ, მუშაობს თუ არა სერვერთან დაკავშირების კოდი ფაილი `sample.py`-ის გაშვებით.
+To get started, you can verify that your connection code works by running `sample.py` file.
 
-#### ტექნიკური დეტალები:
+#### Technical Details:
 
-rsa სერვერების ლოკალურად გასაშვებად გამოიყენეთ ბრძანება
+rsa To run the RSA servers locally, use the following commands:
 ```
 python3 rsa_signing_server.py 49104 
 
 python3 rsa_verify_server.py 49105
 ```
-
-თქვენ უნდა შეავსოთ ფაილი `sign.py` (დაწეროთ `get_signature` ფუნქციის იმპლემენტაცია), რომელიც გაიშვება შემდეგი ბრძანებით:
+You must complete the file `sign.py` by implementing the function `get_signature`.
+Your script will be executed with:
 ```
 python3 sign.py < input.txt
 ```
-
-ფაილში `input.txt` წერია RSA-ს მოდული და შეტყობინება. 
-stdout-ზე უნდა გამოიტანოთ ამ შეტყობინების ხელმოწერა.
+The file `input.txt` contains the RSA modulus and the message.
+Your program should output the signature for that message to stdout.
